@@ -9,7 +9,8 @@ Tableau étant la variable représentant la matrice ou grille de départ.
 Ainsi, l'algorythme parcourt des branches de possibilités pour arriver à la résolution de la grille. 
 Le terme backtracking est utilisé pour définir le retour en arrière (return false) si l'algorythme est bloqué sur une branche. 
 Comme il teste toutes les combinaisons possibles, la méthode est dite de force brute.
-/!\ : Ce n'est certainement pas l'algorythme le plus optimiser pour résoudre une grille de sudoku
+
+/!\ : Ce n'est certainement pas l'algorythme le plus optimisé pour résoudre une grille de sudoku
 
 
 
