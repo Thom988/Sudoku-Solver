@@ -1,4 +1,4 @@
-const sudoku = [
+const grilleDepart = [
   [0, 5, 0, 7, 8, 0, 0, 0, 0],
   [0, 0, 8, 2, 3, 0, 7, 5, 6],
   [2, 7, 4, 6, 1, 0, 0, 3, 9],
@@ -9,9 +9,11 @@ const sudoku = [
   [4, 3, 0, 0, 0, 0, 9, 0, 5],
   [1, 0, 9, 3, 0, 0, 0, 0, 0],
 ];
-let tableau = [...sudoku];
+let tableau = [...grilleDepart];
+let cmpt = 0;
 
 function resoudre(tableau) {
+  cmpt += 50;
   let position = prochaineCaseVide(tableau);
   if (position === null) {
     return true;
@@ -19,14 +21,28 @@ function resoudre(tableau) {
     for (let nb = 1; nb < 10; nb++) {
       if (estValide(tableau, nb, position[0], position[1])) {
         tableau[position[0]][position[1]] = nb;
+        setTimeout(() => {
+          actualiserCellule(position[0], position[1], nb);
+          colorierCellule(position[0], position[1]);
+        }, cmpt);
         if (resoudre(tableau)) {
           return true;
         }
       } else {
         tableau[position[0]][position[1]] = 0;
+        setTimeout(() => {
+          actualiserCellule(position[0], position[1], 0);
+          retablirCouleurCellule(position[0], position[1]);
+        }, cmpt);
       }
     }
-    //si le sudoku n'est pas faisable
+    //si la case n'est pas faisable
+    // ICI : remettre la couleur de la case par defaut (blanc ou gris)
+    tableau[position[0]][position[1]] = 0;
+        setTimeout(() => {
+          actualiserCellule(position[0], position[1], 0);
+          retablirCouleurCellule(position[0], position[1]);
+        }, cmpt);
     return false;
   }
 }
@@ -71,17 +87,18 @@ function prochaineCaseVide(tableau) {
   return null;
 }
 
-function afficherTable(sudoku) {
-  const tableElement = document.createElement("table");
+function afficherGrilleDepart() {
   const windowElement = document.querySelector(".sudoku-window");
+  //windowElement.innerHTML = "";
+  const tableElement = document.createElement("table");
   tableElement.classList.add("sudoku-table");
-  for (let i = 0; i < sudoku.length; i++) {
+  for (let i = 0; i < grilleDepart.length; i++) {
     const row = document.createElement("tr");
     row.dataset.id = `row-${i + 1}`;
-    for (let j = 0; j < sudoku[i].length; j++) {
+    for (let j = 0; j < grilleDepart[i].length; j++) {
       const cellule = document.createElement("td");
       cellule.dataset.id = `cell-${j + 1}`;
-      cellule.textContent = sudoku[i][j] !== 0 ? sudoku[i][j] : "";
+      cellule.textContent = grilleDepart[i][j] !== 0 ? grilleDepart[i][j] : "";
       if (Math.floor(j / 3) * 3 === 3 && Math.floor(i / 3) * 3 !== 3) {
         cellule.classList.add("region-color");
       } else if (Math.floor(j / 3) * 3 !== 3 && Math.floor(i / 3) * 3 === 3) {
@@ -94,7 +111,43 @@ function afficherTable(sudoku) {
   windowElement.appendChild(tableElement);
 }
 
-afficherTable(sudoku);
-if (resoudre(tableau)) {
-    afficherTable(tableau);
+function actualiserCellule(ligne, colonne, nb) {
+  const cellElem = document.querySelector(
+    `tr[data-id=row-${ligne + 1}] td[data-id=cell-${colonne + 1}]`
+  );
+
+  if (nb === 0) {
+    cellElem.textContent = "";
+  } else {
+    cellElem.textContent = nb;
+  }
 }
+
+function colorierCellule(ligne, colonne) {
+  const cellElem = document.querySelector(
+    `tr[data-id=row-${ligne + 1}] td[data-id=cell-${colonne + 1}]`
+  );
+  cellElem.setAttribute("style", "background-color:rgba(16, 219, 118, 0.3)"); // vert
+  //cellElem.setAttribute("style", "background-color:rgba(255, 201, 24, 0.234)"); // orange-jaune
+
+}
+
+function retablirCouleurCellule(ligne, colonne) {
+  const cellElem = document.querySelector(
+    `tr[data-id=row-${ligne + 1}] td[data-id=cell-${colonne + 1}]`
+  );
+  if (Math.floor(colonne / 3) * 3 === 3 && Math.floor(ligne / 3) * 3 !== 3) {
+    cellElem.setAttribute("style", "background-color: rgba(0, 0, 0, 0.1)");
+  } else if (Math.floor(colonne / 3) * 3 !== 3 && Math.floor(ligne / 3) * 3 === 3) {
+    cellElem.setAttribute("style", "background-color: rgba(0, 0, 0, 0.1)");  
+  } else {
+    cellElem.setAttribute("style", "background-color: none"); 
+  }
+}
+
+
+afficherGrilleDepart();
+setTimeout( () => {
+  resoudre(tableau);
+}, 2000)
+
