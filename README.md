@@ -1,11 +1,13 @@
-#Sudoku-Solver
+Sudoku-Solver
 
-##This application is designed to solve a Sudoku grid using backtracking => Recursion
+This application is designed to solve a Sudoku grid using backtracking => Recursion
+
 'Tableau' is the variable representing the matrix or initial grid.
-The 'resoudre()' function initiates the search for the next empty cell, a cell with a value of 0.
-We iterate through the numbers x from 1 to 9.
-If x is a valid option, we insert x into the 'tableau' grid and call the 'resoudre(tableau)' method => (recursion).
-If the cell cannot contain any number, the function returns false.
+The 'resoudre()' function initiates the search for the next empty cell, a cell with a value of 0 :
+
+1) We iterate through the numbers x from 1 to 9.
+2) If x is a valid option, we insert x into the 'tableau' grid and call the 'resoudre(tableau)' method => (recursion).
+3) If the cell cannot contain any number, the function returns false.
 
 Thus, the algorithm traverses branches of possibilities until it reaches the solution of the grid.
 The term 'backtracking' is used to describe the backward movement if the algorithm is stuck on a branch of possibility.
